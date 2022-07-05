@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0">
+
+<xs:element name="assertions" type="assertionService"/>
+
+<xs:element name="basic-authenticator" type="basicAuthenticatorConfig"/>
+
+<xs:element name="config" type="config"/>
+
+<xs:element name="constraint" type="constraintConfig"/>
+
+<xs:element name="constraint-mapping" type="constraintMappingConfig"/>
+
+<xs:element name="constraint-security" type="constraintSecurityHandlerConfig"/>
+
+<xs:element name="contains" type="containsAssertion"/>
+
+<xs:element name="context" type="contextHandlerConfig"/>
+
+<xs:element name="contextCollection" type="contextHandlerCollectionConfig"/>
+
+<xs:element name="default" type="defaultHandlerConfig"/>
+
+<xs:element name="digest-authenticator" type="digestAuthenticatorConfig"/>
+
+<xs:element name="echo" type="echoAssertion"/>
+
+<xs:element name="equals" type="equalsAssertion"/>
+
+<xs:element name="gzip" type="gzipHandlerConfig"/>
+
+<xs:element name="handlerCollection" type="handlerCollectionConfig"/>
+
+<xs:element name="handlerList" type="handlerListConfig"/>
+
+<xs:element name="hash-login-service" type="hashLoginServiceConfig"/>
+
+<xs:element name="hello" type="helloHandlerConfig"/>
+
+<xs:element name="http" type="httpConnectionFactoryConfig"/>
+
+<xs:element name="jetty" type="jetty"/>
+
+<xs:element name="local" type="localConnectorConfig"/>
+
+<xs:element name="mimeType" type="resourceHandlerMimeTypeConfig"/>
+
+<xs:element name="redirectPattern" type="redirectPatternRuleConfig"/>
+
+<xs:element name="redirectRegex" type="redirectRegexRuleConfig"/>
+
+<xs:element name="resource" type="resourceHandlerConfig"/>
+
+<xs:element name="resteasy" type="resteasy"/>
+
+<xs:element name="rewrite" type="rewriteHandlerConfig"/>
+
+<xs:element name="rewritePattern" type="rewritePatternRuleConfig"/>
+
+<xs:element name="rewriteRegex" type="rewriteRegexRuleConfig"/>
+
+<xs:element name="serverconnector" type="serverConnectorConfig"/>
+
+<xs:element name="servlet-container" type="servletContainer"/>
+
+<xs:element name="servlets" type="servletContextHandlerConfig"/>
+
+<xs:element name="ssl" type="sslConnectionFactoryConfig"/>
+
+<xs:element name="sslcontextfactory" type="sslContextFactoryConfig"/>
+
+<xs:element name="virtualHost" type="virtualHostRuleConfig"/>
+
+<xs:element name="web-annotations" type="webAnnotationsService"/>
+
+<xs:complexType name="ruleConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="configurable" abstract="true">
+<xs:sequence/>
+<xs:attribute name="id" type="xs:ID"/>
+<xs:attribute name="combine.self" type="combineSelf"/>
+<xs:attribute name="combine.children" type="combineChildren"/>
+</xs:complexType>
+
+<xs:complexType name="helloHandlerConfig">
+<xs:complexContent>
+<xs:extension base="handlerConfig">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="handlerConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="resteasy">
+<xs:complexContent>
+<xs:extension base="jaxrs">
+<xs:sequence>
+<xs:element name="servletContainer" type="xs:IDREF" minOccurs="0"/>
+<xs:element name="webServer" type="xs:IDREF" minOccurs="0"/>
+<xs:element name="prefix" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="jaxrs" abstract="true">
+<xs:complexContent>
+<xs:extension base="topLevelService">
+<xs:sequence>
+<xs:element name="discoverResources" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="topLevelService" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurableService">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="configurableService" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="servletContainer">
+<xs:complexContent>
+<xs:extension base="topLevelService">
+<xs:sequence>
+<xs:element name="registerGuiceFilter" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="webServerService" abstract="true">
+<xs:complexContent>
+<xs:extension base="topLevelService">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="jetty">
+<xs:complexContent>
+<xs:extension base="webServerService">
+<xs:sequence>
+<xs:element name="sslcontextfactories" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="sslcontextfactory" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="connectors" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element ref="serverconnector"/>
+<xs:element ref="local"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:choice>
+<xs:element ref="hello"/>
+<xs:element ref="contextCollection"/>
+<xs:element ref="handlerCollection"/>
+<xs:element ref="default"/>
+<xs:element ref="servlets"/>
+<xs:element ref="constraint-security"/>
+<xs:element ref="handlerList"/>
+<xs:element ref="resource"/>
+<xs:element ref="rewrite"/>
+<xs:element ref="gzip"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="sslContextFactoryConfig">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence>
+<xs:element name="keyStorePath" type="xs:string" minOccurs="0"/>
+<xs:element name="keyStorePassword" type="xs:string" minOccurs="0"/>
+<xs:element name="keyAlias" type="xs:string" minOccurs="0"/>
+<xs:element name="trustStoreLocation" type="xs:string" minOccurs="0"/>
+<xs:element name="trustStorePassword" type="xs:string" minOccurs="0"/>
+<xs:element name="needClientAuth" type="xs:boolean"/>
+<xs:element name="wantClientAuth" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="connectorConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurableService">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="contextHandlerCollectionConfig">
+<xs:complexContent>
+<xs:extension base="handlerConfig">
+<xs:sequence>
+<xs:element ref="context" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="contextHandlerConfig">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence>
+<xs:element name="contextPath" type="xs:string" minOccurs="0"/>
+<xs:element name="virtualHosts" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+<xs:choice>
+<xs:element ref="hello"/>
+<xs:element ref="contextCollection"/>
+<xs:element ref="handlerCollection"/>
+<xs:element ref="default"/>
+<xs:element ref="servlets"/>
+<xs:element ref="constraint-security"/>
+<xs:element ref="handlerList"/>
+<xs:element ref="resource"/>
+<xs:element ref="rewrite"/>
+<xs:element ref="gzip"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="serverConnectorConfig">
+<xs:complexContent>
+<xs:extension base="abstractNetworkConnectorConfig">
+<xs:sequence>
+<xs:element name="connections" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element ref="http"/>
+<xs:element ref="ssl"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="provideAddress" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="abstractNetworkConnectorConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="connectorConfig">
+<xs:sequence>
+<xs:element name="port" type="xs:int" minOccurs="0"/>
+<xs:element name="host" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="connectionFactoryConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="redirectPatternRuleConfig">
+<xs:complexContent>
+<xs:extension base="ruleConfig">
+<xs:sequence>
+<xs:element name="pattern" type="xs:string"/>
+<xs:element name="location" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="handlerCollectionConfig">
+<xs:complexContent>
+<xs:extension base="handlerConfig">
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element ref="hello"/>
+<xs:element ref="contextCollection"/>
+<xs:element ref="handlerCollection"/>
+<xs:element ref="default"/>
+<xs:element ref="servlets"/>
+<xs:element ref="constraint-security"/>
+<xs:element ref="handlerList"/>
+<xs:element ref="resource"/>
+<xs:element ref="rewrite"/>
+<xs:element ref="gzip"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="authenticatorConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="equalsAssertion">
+<xs:complexContent>
+<xs:extension base="assertion">
+<xs:sequence>
+<xs:element name="expected" type="xs:string" minOccurs="0"/>
+<xs:element name="actual" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="assertion" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="digestAuthenticatorConfig">
+<xs:complexContent>
+<xs:extension base="authenticatorConfig">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="assertionService">
+<xs:complexContent>
+<xs:extension base="topLevelService">
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element ref="equals"/>
+<xs:element ref="contains"/>
+<xs:element ref="echo"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="defaultHandlerConfig">
+<xs:complexContent>
+<xs:extension base="handlerConfig">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="resourceHandlerMimeTypeConfig">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence>
+<xs:element name="extension" type="xs:string" minOccurs="0"/>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="webAppContextConfig">
+<xs:complexContent>
+<xs:extension base="servletContextHandlerConfig">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="servletContextHandlerConfig">
+<xs:complexContent>
+<xs:extension base="handlerConfig">
+<xs:sequence>
+<xs:element name="servletContainer" type="xs:IDREF" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="handlerWrapperConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="handlerConfig">
+<xs:choice>
+<xs:element ref="hello"/>
+<xs:element ref="contextCollection"/>
+<xs:element ref="handlerCollection"/>
+<xs:element ref="default"/>
+<xs:element ref="servlets"/>
+<xs:element ref="constraint-security"/>
+<xs:element ref="handlerList"/>
+<xs:element ref="resource"/>
+<xs:element ref="rewrite"/>
+<xs:element ref="gzip"/>
+</xs:choice>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="httpConnectionFactoryConfig">
+<xs:complexContent>
+<xs:extension base="connectionFactoryConfig">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="basicAuthenticatorConfig">
+<xs:complexContent>
+<xs:extension base="authenticatorConfig">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="redirectRegexRuleConfig">
+<xs:complexContent>
+<xs:extension base="ruleConfig">
+<xs:sequence>
+<xs:element name="regex" type="xs:string" minOccurs="0"/>
+<xs:element name="replacement" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="remoteWebServerService">
+<xs:complexContent>
+<xs:extension base="webServerService">
+<xs:sequence>
+<xs:element name="url" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="hashLoginServiceConfig">
+<xs:complexContent>
+<xs:extension base="loginServiceConfig">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="config" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="loginServiceConfig" abstract="true">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="rewritePatternRuleConfig">
+<xs:complexContent>
+<xs:extension base="ruleConfig">
+<xs:sequence>
+<xs:element name="pattern" type="xs:string"/>
+<xs:element name="replacement" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="virtualHostRuleConfig">
+<xs:complexContent>
+<xs:extension base="ruleConfig">
+<xs:sequence>
+<xs:element name="hosts" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="rules" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element ref="redirectPattern"/>
+<xs:element ref="redirectRegex"/>
+<xs:element ref="rewritePattern"/>
+<xs:element ref="virtualHost"/>
+<xs:element ref="rewriteRegex"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="rewriteRegexRuleConfig">
+<xs:complexContent>
+<xs:extension base="ruleConfig">
+<xs:sequence>
+<xs:element name="regex" type="xs:string"/>
+<xs:element name="replacement" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="constraintSecurityHandlerConfig">
+<xs:complexContent>
+<xs:extension base="handlerWrapperConfig">
+<xs:sequence>
+<xs:element ref="hash-login-service"/>
+<xs:choice>
+<xs:element ref="digest-authenticator"/>
+<xs:element ref="basic-authenticator"/>
+</xs:choice>
+<xs:element name="realm-name" type="xs:string"/>
+<xs:element name="constraint-mappings" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="constraint-mapping" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="constraintMappingConfig">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence>
+<xs:element name="method" type="xs:string" minOccurs="0"/>
+<xs:element name="method-omissions" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="method" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="path-spec" type="xs:string" minOccurs="0"/>
+<xs:element ref="constraint"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="constraintConfig">
+<xs:complexContent>
+<xs:extension base="configurable">
+<xs:sequence>
+<xs:element name="authenticate" type="xs:boolean"/>
+<xs:element name="roles" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="role" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="data-constraint" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="handlerListConfig">
+<xs:complexContent>
+<xs:extension base="handlerCollectionConfig">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="config">
+<xs:complexContent>
+<xs:extension base="configurableService">
+<xs:sequence>
+<xs:element name="properties" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:any processContents="skip" namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element ref="resteasy"/>
+<xs:element ref="servlet-container"/>
+<xs:element ref="jetty"/>
+<xs:element ref="assertions"/>
+<xs:element ref="web-annotations"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="sslConnectionFactoryConfig">
+<xs:complexContent>
+<xs:extension base="connectionFactoryConfig">
+<xs:sequence>
+<xs:element ref="sslcontextfactory"/>
+<xs:element name="nextProtocol" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="resourceHandlerConfig">
+<xs:complexContent>
+<xs:extension base="handlerConfig">
+<xs:sequence>
+<xs:element name="directoriesListed" type="xs:boolean"/>
+<xs:element name="welcomeFiles" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="welcomeFile" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="mimeTypes" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="mimeType" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="resourceBase" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="containsAssertion">
+<xs:complexContent>
+<xs:extension base="assertion">
+<xs:sequence>
+<xs:element name="expected" type="xs:string" minOccurs="0"/>
+<xs:element name="actual" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="rewriteHandlerConfig">
+<xs:complexContent>
+<xs:extension base="handlerWrapperConfig">
+<xs:sequence>
+<xs:element name="rules" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element ref="redirectPattern"/>
+<xs:element ref="redirectRegex"/>
+<xs:element ref="rewritePattern"/>
+<xs:element ref="virtualHost"/>
+<xs:element ref="rewriteRegex"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="gzipHandlerConfig">
+<xs:complexContent>
+<xs:extension base="handlerWrapperConfig">
+<xs:sequence>
+<xs:element name="minGzipSize" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="echoAssertion">
+<xs:complexContent>
+<xs:extension base="assertion">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="localConnectorConfig">
+<xs:complexContent>
+<xs:extension base="connectorConfig">
+<xs:sequence>
+<xs:element name="maxIdleTime" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="webAnnotationsService">
+<xs:complexContent>
+<xs:extension base="topLevelService">
+<xs:sequence>
+<xs:element name="servletContainer" type="xs:IDREF" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:simpleType name="combineSelf">
+<xs:restriction base="xs:string">
+<xs:enumeration value="MERGE"/>
+<xs:enumeration value="REMOVE"/>
+<xs:enumeration value="DEFAULTS"/>
+<xs:enumeration value="OVERRIDE"/>
+<xs:enumeration value="OVERRIDABLE"/>
+<xs:enumeration value="OVERRIDABLE_BY_TAG"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="combineChildren">
+<xs:restriction base="xs:string">
+<xs:enumeration value="MERGE"/>
+<xs:enumeration value="APPEND"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

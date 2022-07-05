@@ -1,0 +1,22 @@
+15:56:31.025 [main] INFO  org.hibernate.validator.util.Version - Hibernate Validator 4.2.0.Final
+15:56:31.183 [main] INFO  Moonshine - Configuring: Resteasy (Starts RESTEasy JAXRS implementation)
+15:56:31.232 [main] INFO  Moonshine - Configuring: ServerConnectorConfig (Jetty connector using NIO buffers and non blocking threading model)
+15:56:31.232 [main] INFO  Moonshine - Configuring: ServletContextHandlerConfig (Jetty servlet handler)
+15:56:31.232 [main] INFO  Moonshine - Configuring: WebAnnotationsService (Registers annotated servlets and filters)
+15:56:31.246 [main] INFO  Moonshine - Creating injector
+15:56:31.359 [main] INFO  Moonshine - Starting services
+15:56:31.359 [main] INFO  Moonshine - Starting: Jetty (Starts Jetty web server instance)
+15:56:31.399 [main] INFO  org.eclipse.jetty.server.Server - jetty-9.1.1.v20140108
+15:56:31.611 [main] INFO  o.e.j.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@12d5c30e{/,null,AVAILABLE}
+15:56:32.077 [main] INFO  o.e.jetty.server.ServerConnector - Started ServerConnector@1947596f{HTTP/1.1}{:55196}
+15:56:32.077 [main] INFO  Moonshine -     Jetty connector started on :55196
+15:56:32.077 [main] INFO  Moonshine - Starting: Resteasy (Starts RESTEasy JAXRS implementation)
+15:56:32.091 [main] INFO  Moonshine - Starting: ServletContextHandlerConfig (Jetty servlet handler)
+15:56:32.092 [main] INFO  Moonshine - All services started
+15:56:32.285 [main] INFO  Moonshine - Shutting down TimeResourceTest
+15:56:32.285 [main] INFO  Moonshine - Stopping: ServletContextHandlerConfig (Jetty servlet handler)
+15:56:32.285 [main] INFO  Moonshine - Stopping: Jetty (Starts Jetty web server instance)
+15:56:32.302 [main] INFO  o.e.jetty.server.ServerConnector - Stopped ServerConnector@1947596f{HTTP/1.1}{:0}
+15:56:32.302 [main] INFO  o.e.j.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@12d5c30e{/,null,UNAVAILABLE}
+15:56:32.302 [main] INFO  Moonshine - Closing: ServletContextHandlerConfig (Jetty servlet handler)
+15:56:32.302 [main] INFO  Moonshine - All services stopped

@@ -1,0 +1,10 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd">
+	<resteasy combine.self='overridable_by_tag'>
+<prefix>${oneof:${resteasy.prefix},${jaxrs.prefix},}</prefix><discoverResources>true</discoverResources>
+</resteasy>
+	<jetty combine.self='overridable_by_tag'>
+<connectors>    <serverconnector>        <provideAddress>true</provideAddress>        <host>${oneof:${jetty.host},${webserver.host},}</host>        <port>${oneof:${jetty.port},${webserver.host},}</port>    </serverconnector></connectors>
+</jetty>
+	<web-annotations combine.self='overridable_by_tag'/>
+	<servlet-container combine.self='overridable_by_tag'/>
+</config>
